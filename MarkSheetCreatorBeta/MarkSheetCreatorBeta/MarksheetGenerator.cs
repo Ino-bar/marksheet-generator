@@ -36,7 +36,7 @@ namespace MarkSheetCreator
                             i++;
                         }
                     }
-                    MarksheetTemplate.MarksheetTemplatePublic.SaveAs(Form1.PublicCompletedMarksheetSaveLocation + "\\" + Convert.ToString(sheet.Cells[row.Row, columns[0] + 1].Value) + ", " + Convert.ToString(sheet.Cells[row.Row, columns[1] + 1].Value) + ".xlsx");
+                    MarksheetTemplate.MarksheetTemplatePublic.SaveAs(Form1.PublicCompletedMarksheetSaveLocation + "\\" + Convert.ToString(sheet.Cells[row.Row, columns[0] + 1].Value) + ", " + Convert.ToString(sheet.Cells[row.Row, columns[1] + 1].Value), FileFormat: Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook);
                 }
             }
             System.Windows.Forms.MessageBox.Show("Forms Complete");
