@@ -25,8 +25,10 @@ namespace MarkSheetCreator
         public static List<int> ListofChosenValues = new List<int>();
         public static List<string> ListofChosenValuesText = new List<string>();
         public static List<string> ListofChosenCells = new List<string>();
-        public static List<string> ListofCheckedBoxes = new List<string>();
+        public static List<CheckBox> ListofCheckedBoxes = new List<CheckBox>();
         public static StudentDataSheet PublicDataSheetForCopying = new StudentDataSheet();
+        private int checkboxnameint;
+        private int i = 0;
 
         public static CheckBox PublicMarkSheetNameFieldCheck
         {
@@ -177,13 +179,17 @@ namespace MarkSheetCreator
                 Comboboxtop = this.Controls.OfType<ComboBox>().Last().Top + 25;
             ComboBoxOnClick.Top = Comboboxtop;
             this.Controls.Add(ComboBoxOnClick);
-            string selectedItem = ComboBoxOnClick.Items[ComboBoxOnClick.SelectedIndex].ToString();
+            //string selectedItem = ComboBoxOnClick.Items[ComboBoxOnClick.SelectedIndex].ToString();
             ComboBoxOnClick.SelectedIndexChanged += new System.EventHandler(ComboBoxOnClick_SelectedIndexChanged);
             //Combo Box creation end
 
             //Name field check box creation
-            /*
+            
             CheckBox marksheetNameFieldCheck = new CheckBox();
+            ListofCheckedBoxes.Add(marksheetNameFieldCheck);
+            Console.WriteLine(ListofCheckedBoxes.Count);
+            Console.WriteLine(ListofCheckedBoxes[i]);
+            i++;
             checkboxnameint += 1;
             marksheetNameFieldCheck.Name = "checkBox" + checkboxnameint.ToString();
             string _strCheckBoxName = marksheetNameFieldCheck.Name;
@@ -199,7 +205,7 @@ namespace MarkSheetCreator
             publicMarkSheetNameFieldCheck = marksheetNameFieldCheck;
             marksheetNameFieldCheck.CheckedChanged += new System.EventHandler(marksheetNameFieldCheck_CheckedChanged);
             //Name field check box creation
-            */
+            
 
             //Cell reference textbox creation
             TextBox marksheetCellForField = new TextBox();
@@ -308,7 +314,15 @@ namespace MarkSheetCreator
         }
         private void marksheetNameFieldCheck_CheckedChanged(object sender, EventArgs e)
         {
-
+            Console.WriteLine(publicMarkSheetNameFieldCheck.Name);
+            Console.WriteLine(ListofCheckedBoxes[1]);
+            //var CheckState = true;
+            Console.WriteLine(ListofCheckedBoxes[2].CheckState);
+            foreach(CheckBox publicMarkSheetNameFieldCheck in ListofCheckedBoxes)
+                if (publicMarkSheetNameFieldCheck.CheckState == CheckState.Checked)
+                {
+                    Console.WriteLine(ListofCheckedBoxes.IndexOf(publicMarkSheetNameFieldCheck));
+                }
         }
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
