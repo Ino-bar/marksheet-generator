@@ -25,10 +25,11 @@ namespace MarkSheetCreator
         public static List<int> ListofChosenValues = new List<int>();
         public static List<string> ListofChosenValuesText = new List<string>();
         public static List<string> ListofChosenCells = new List<string>();
-        public static List<CheckBox> ListofCheckedBoxes = new List<CheckBox>();
+        public static List<CheckBox> ListofCheckBoxes = new List<CheckBox>();
         public static StudentDataSheet PublicDataSheetForCopying = new StudentDataSheet();
         private int checkboxnameint;
         private int i = 0;
+        public static int NumberOfCheckedCheckboxes;
 
         public static CheckBox PublicMarkSheetNameFieldCheck
         {
@@ -101,6 +102,7 @@ namespace MarkSheetCreator
         {
             InitializeComponent();
             button1.Enabled = false;
+            ListofCheckBoxes.Add(checkBox1);
         }
 
         public void BrowseDataTable_Click(object sender, EventArgs e)
@@ -186,9 +188,7 @@ namespace MarkSheetCreator
             //Name field check box creation
             
             CheckBox marksheetNameFieldCheck = new CheckBox();
-            ListofCheckedBoxes.Add(marksheetNameFieldCheck);
-            Console.WriteLine(ListofCheckedBoxes.Count);
-            Console.WriteLine(ListofCheckedBoxes[i]);
+            ListofCheckBoxes.Add(marksheetNameFieldCheck);
             i++;
             checkboxnameint += 1;
             marksheetNameFieldCheck.Name = "checkBox" + checkboxnameint.ToString();
@@ -257,12 +257,36 @@ namespace MarkSheetCreator
             }
             if (ListofChosenValuesText != null || ListofChosenValuesText != null)
             {
-                string NameField = ListofChosenValuesText[0];
-                string MarkerField = ListofChosenValuesText[1];
-                _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
-                string fileName = "[" + NameField + "]" + ", " + "[" + MarkerField + "]" + ".xlsx";
-                _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, fileName);
-                textBox2.Text = _completedMarksheetsfilepath;
+                if (NumberOfCheckedCheckboxes != 0)
+                {
+                    string[] DataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
+                    string NameField = ListofChosenValuesText[0];
+                    string MarkerField = ListofChosenValuesText[1];
+                    for (int k = 0; k < ListofCheckBoxes.Count; k++)
+                    { 
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                        {
+                            Console.WriteLine(ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]));
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            //Console.WriteLine(DataSheetColumnsToFileName[k]);
+                        }
+                    }
+                    _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
+                    string fileType = ".xlsx";
+                    string fileName = DataSheetColumnsToFileName.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
+                    _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, fileName, fileType);
+                    textBox2.Text = _completedMarksheetsfilepath;
+                }
+                else
+                {
+                    label7.Text = "You must tick at least one field for the file name";
+                }
+
+                //   _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
+                //   string fileName = "[" + NameField + "]" + ", " + "[" + MarkerField + "]" + ".xlsx";
+                //   _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, fileName);
+                //   textBox2.Text = _completedMarksheetsfilepath;
             }
         }
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -310,18 +334,25 @@ namespace MarkSheetCreator
         }
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-
+            NumberOfCheckedCheckboxes = this.Controls.OfType<CheckBox>().Count(c => c.Checked);
+            Console.WriteLine(NumberOfCheckedCheckboxes);
+            foreach (CheckBox checkBox in ListofCheckBoxes)
+                if (checkBox.CheckState == CheckState.Checked)
+                {
+                    Console.WriteLine(ListofCheckBoxes.IndexOf(checkBox));
+                }
         }
         private void marksheetNameFieldCheck_CheckedChanged(object sender, EventArgs e)
         {
-            Console.WriteLine(publicMarkSheetNameFieldCheck.Name);
-            Console.WriteLine(ListofCheckedBoxes[1]);
-            //var CheckState = true;
-            Console.WriteLine(ListofCheckedBoxes[2].CheckState);
-            foreach(CheckBox publicMarkSheetNameFieldCheck in ListofCheckedBoxes)
-                if (publicMarkSheetNameFieldCheck.CheckState == CheckState.Checked)
+            NumberOfCheckedCheckboxes = this.Controls.OfType<CheckBox>().Count(c => c.Checked);
+            Console.WriteLine(NumberOfCheckedCheckboxes);
+            foreach (CheckBox checkBox in ListofCheckBoxes)
+                if (checkBox.CheckState == CheckState.Checked)
                 {
-                    Console.WriteLine(ListofCheckedBoxes.IndexOf(publicMarkSheetNameFieldCheck));
+                    //Console.WriteLine(ListofCheckBoxes.Count);
+                    Console.WriteLine(ListofCheckBoxes.IndexOf(checkBox));
+                    //NumberOfCheckedCheckboxes = this.Controls.OfType<CheckBox>().Count(c => c.Checked);
+                    //Console.WriteLine(NumberOfCheckedCheckboxes);
                 }
         }
         private void panel1_Paint(object sender, PaintEventArgs e)

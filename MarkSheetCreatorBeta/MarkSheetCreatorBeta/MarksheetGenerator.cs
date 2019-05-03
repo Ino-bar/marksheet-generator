@@ -36,7 +36,22 @@ namespace MarkSheetCreator
                             i++;
                         }
                     }
-                    MarksheetTemplate.MarksheetTemplatePublic.SaveAs(Form1.PublicCompletedMarksheetSaveLocation + "\\" + Convert.ToString(sheet.Cells[row.Row, columns[0] + 1].Value) + ", " + Convert.ToString(sheet.Cells[row.Row, columns[1] + 1].Value), FileFormat: Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook);
+                    if (Form1.NumberOfCheckedCheckboxes != 0)
+                    {
+                        string[] DataSheetColumnsToFileName = new string[Form1.ListofCheckBoxes.Count];
+                        for (int k = 0; k < Form1.ListofCheckBoxes.Count; k++)
+                        { 
+                            if (Form1.ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                            {
+                                var checkBoxToDataSheet = Form1.ListofCheckBoxes.IndexOf(Form1.ListofCheckBoxes[k]);
+                                DataSheetColumnsToFileName[k] = Convert.ToString(sheet.Cells[row.Row, columns[checkBoxToDataSheet] + 1].Value);
+                                DataSheetColumnsToFileName[k] = DataSheetColumnsToFileName[k].Replace("/", "-");
+                            }
+                        }
+                        var fileName = DataSheetColumnsToFileName.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
+                        MarksheetTemplate.MarksheetTemplatePublic.SaveAs(Form1.PublicCompletedMarksheetSaveLocation + "\\" + Convert.ToString(fileName), FileFormat: Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook);
+                    }
+                    //MarksheetTemplate.MarksheetTemplatePublic.SaveAs(Form1.PublicCompletedMarksheetSaveLocation + "\\" + Convert.ToString(sheet.Cells[row.Row, columns[0] + 1].Value) + ", " + Convert.ToString(sheet.Cells[row.Row, columns[1] + 1].Value), FileFormat: Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook);
                 }
             }
             System.Windows.Forms.MessageBox.Show("Forms Complete");
