@@ -49,6 +49,13 @@ namespace MarkSheetCreator
                             }
                         }
                         var fileName = DataSheetColumnsToFileName.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
+                        fileName = fileName.Replace(", , , ", ", ");
+                        fileName = fileName.Replace(", , ", ", ");
+                        char last = fileName[fileName.Length - 1];
+                        if (last.Equals(','))
+                        {
+                            fileName = fileName.Remove(fileName.Length - 1);
+                        }
                         MarksheetTemplate.MarksheetTemplatePublic.SaveAs(Form1.PublicCompletedMarksheetSaveLocation + "\\" + Convert.ToString(fileName), FileFormat: Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook);
                     }
                     //MarksheetTemplate.MarksheetTemplatePublic.SaveAs(Form1.PublicCompletedMarksheetSaveLocation + "\\" + Convert.ToString(sheet.Cells[row.Row, columns[0] + 1].Value) + ", " + Convert.ToString(sheet.Cells[row.Row, columns[1] + 1].Value), FileFormat: Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook);

@@ -262,15 +262,14 @@ namespace MarkSheetCreator
                     string[] DataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
                     string NameField = ListofChosenValuesText[0];
                     string MarkerField = ListofChosenValuesText[1];
-                    int k = 0;
-                    foreach(CheckBox checkBox in ListofCheckBoxes)
+                    //int k = 0;
+                    for (int k = 0; k < Form1.ListofCheckBoxes.Count; k++)
                     {
-                        if (checkBox.CheckState == CheckState.Checked)
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
                         {
-                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(checkBox);
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
                             DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
                         }
-                        k += k + 1;
                     }
                     /*
                     for (int k = 0; k < ListofCheckBoxes.Count; k++)
@@ -288,7 +287,15 @@ namespace MarkSheetCreator
                     _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
                     string fileType = ".xlsx";
                     string fileName = DataSheetColumnsToFileName.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
-                    _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, fileName, fileType);
+                    fileName = fileName.Replace(", , , ", ", ");
+                    fileName = fileName.Replace(", , ", ", ");
+                    char last = fileName[fileName.Length - 1];
+                    if (last.Equals(','))
+                    {
+                        fileName = fileName.Remove(fileName.Length - 1);
+                    }
+                    fileName = fileName + fileType;
+                    _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, fileName);
                     textBox2.Text = _completedMarksheetsfilepath;
                 }
                 else
