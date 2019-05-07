@@ -262,16 +262,29 @@ namespace MarkSheetCreator
                     string[] DataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
                     string NameField = ListofChosenValuesText[0];
                     string MarkerField = ListofChosenValuesText[1];
+                    int k = 0;
+                    foreach(CheckBox checkBox in ListofCheckBoxes)
+                    {
+                        if (checkBox.CheckState == CheckState.Checked)
+                        {
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(checkBox);
+                            DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                        }
+                        k += k + 1;
+                    }
+                    /*
                     for (int k = 0; k < ListofCheckBoxes.Count; k++)
                     { 
                         if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
                         {
                             Console.WriteLine(ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]));
                             var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            Console.WriteLine(checkBoxToDataSheet);
                             DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
                             //Console.WriteLine(DataSheetColumnsToFileName[k]);
                         }
                     }
+                    */
                     _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
                     string fileType = ".xlsx";
                     string fileName = DataSheetColumnsToFileName.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
@@ -345,12 +358,12 @@ namespace MarkSheetCreator
         private void marksheetNameFieldCheck_CheckedChanged(object sender, EventArgs e)
         {
             NumberOfCheckedCheckboxes = this.Controls.OfType<CheckBox>().Count(c => c.Checked);
-            Console.WriteLine(NumberOfCheckedCheckboxes);
+            //Console.WriteLine(NumberOfCheckedCheckboxes);
             foreach (CheckBox checkBox in ListofCheckBoxes)
                 if (checkBox.CheckState == CheckState.Checked)
                 {
                     //Console.WriteLine(ListofCheckBoxes.Count);
-                    Console.WriteLine(ListofCheckBoxes.IndexOf(checkBox));
+                    //Console.WriteLine(ListofCheckBoxes.IndexOf(checkBox));
                     //NumberOfCheckedCheckboxes = this.Controls.OfType<CheckBox>().Count(c => c.Checked);
                     //Console.WriteLine(NumberOfCheckedCheckboxes);
                 }
