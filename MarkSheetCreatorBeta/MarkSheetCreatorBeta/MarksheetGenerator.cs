@@ -48,9 +48,10 @@ namespace MarkSheetCreator
                                 DataSheetColumnsToFileName[k] = DataSheetColumnsToFileName[k].Replace("/", "-");
                             }
                         }
-                        var fileName = DataSheetColumnsToFileName.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
-                        fileName = fileName.Replace(", , , ", ", ");
-                        fileName = fileName.Replace(", , ", ", ");
+                        List<string> DataSheetColumnsToFileNameArrayToList = new List<string>(DataSheetColumnsToFileName);
+                        DataSheetColumnsToFileNameArrayToList.RemoveAll(item => item == null);
+
+                        var fileName = DataSheetColumnsToFileNameArrayToList.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
                         char last = fileName[fileName.Length - 1];
                         if (last.Equals(','))
                         {

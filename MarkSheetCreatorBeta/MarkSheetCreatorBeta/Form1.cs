@@ -271,6 +271,8 @@ namespace MarkSheetCreator
                             DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
                         }
                     }
+                    List<string> DataSheetColumnsToFileNameArrayToList = new List<string>(DataSheetColumnsToFileName);
+                    DataSheetColumnsToFileNameArrayToList.RemoveAll(item => item == null);
                     /*
                     for (int k = 0; k < ListofCheckBoxes.Count; k++)
                     { 
@@ -286,9 +288,7 @@ namespace MarkSheetCreator
                     */
                     _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
                     string fileType = ".xlsx";
-                    string fileName = DataSheetColumnsToFileName.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
-                    fileName = fileName.Replace(", , , ", ", ");
-                    fileName = fileName.Replace(", , ", ", ");
+                    string fileName = DataSheetColumnsToFileNameArrayToList.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
                     char last = fileName[fileName.Length - 1];
                     if (last.Equals(','))
                     {
