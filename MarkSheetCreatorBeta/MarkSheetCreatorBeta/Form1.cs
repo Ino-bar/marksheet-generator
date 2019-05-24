@@ -26,9 +26,12 @@ namespace MarkSheetCreator
         public static List<string> ListofChosenValuesText = new List<string>();
         public static List<string> ListofChosenCells = new List<string>();
         public static List<CheckBox> ListofCheckBoxes = new List<CheckBox>();
+        public static List<ComboBox> ListofDropDownBoxes = new List<ComboBox>();
+        public static List<TextBox> ListofTextBoxes = new List<TextBox>();
         public static StudentDataSheet PublicDataSheetForCopying = new StudentDataSheet();
         private int checkboxnameint;
         private int i = 0;
+        private int textBoxTabIndex = 0;
         public static int NumberOfCheckedCheckboxes;
 
         public static CheckBox PublicMarkSheetNameFieldCheck
@@ -103,6 +106,11 @@ namespace MarkSheetCreator
             InitializeComponent();
             button1.Enabled = false;
             ListofCheckBoxes.Add(checkBox1);
+            ListofDropDownBoxes.Add(comboBox1);
+            comboBox1.TabStop = false;
+            ListofTextBoxes.Add(textBox1);
+            textBox1.TabIndex = textBoxTabIndex;
+            textBoxTabIndex += 1;
         }
 
         public void BrowseDataTable_Click(object sender, EventArgs e)
@@ -157,8 +165,6 @@ namespace MarkSheetCreator
         }
         private void Confirmation_Click(object sender, EventArgs e)
         {
-            
-            
             MarksheetGenerator MarkSheetConstructor = new MarksheetGenerator();
             MarkSheetConstructor.GetChosenColumnsAndData();
             MarkSheetConstructor.CloseExcel();
@@ -168,8 +174,10 @@ namespace MarkSheetCreator
             int comboboxnameint = 0;
             //Combo Box creation
             ComboBox ComboBoxOnClick = new ComboBox();
+            ListofDropDownBoxes.Add(ComboBoxOnClick);
             comboboxnameint += 1;
             ComboBoxOnClick.Name = comboboxnameint.ToString();
+            ComboBoxOnClick.TabStop = false;
             ComboBoxOnClick.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBoxOnClick.Text = "DropDown" + comboboxnameint.ToString();
             ComboBoxOnClick.BindingContext = new BindingContext();
@@ -209,42 +217,52 @@ namespace MarkSheetCreator
 
             //Cell reference textbox creation
             TextBox marksheetCellForField = new TextBox();
-            
+            ListofTextBoxes.Add(marksheetCellForField);
+            marksheetCellForField.TabIndex = textBoxTabIndex;
+            textBoxTabIndex += 1;
             marksheetCellForField.Left = 293;
             int Textboxtop = 5;
             if (this.Controls.OfType<TextBox>().Count() > 0)
                 Textboxtop = this.Controls.OfType<TextBox>().Last().Top + 25;
             marksheetCellForField.Top = Textboxtop;
             this.Controls.Add(marksheetCellForField);
+            marksheetCellForField.AcceptsTab = true;
             marksheetCellForField.TextChanged += new System.EventHandler(marksheetCellForField_TextChanged);
             marksheetCellForField.Leave += new System.EventHandler(marksheetCellForField_Leave);
             //Cell reference textbox creation
         }
         private void comboBox1_leave(object sender, EventArgs e)
         {
-            ListofChosenValues.Add(comboBox1.SelectedIndex);
-            ListofChosenValuesText.Add(comboBox1.SelectedItem.ToString());
+            //ListofChosenValues.Add(comboBox1.SelectedIndex);
+            //ListofChosenValuesText.Add(comboBox1.SelectedItem.ToString());
         }
         private void textBox1_Leave(object sender, EventArgs e)
         {
             TextBox textBox1 = (TextBox)sender;
-            ListofChosenCells.Add(textBox1.Text);
+            //ListofChosenCells.Add(textBox1.Text);
         }
         private void marksheetCellForField_Leave(object sender, EventArgs e)
         {
             TextBox marksheetCellForField = (TextBox)sender;
-            ListofChosenCells.Add(marksheetCellForField.Text);
+            //ListofChosenCells.Add(marksheetCellForField.Text);
         }
         public void ComboBoxOnClick_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox ComboBoxOnClick = (ComboBox)sender;
-            ListofChosenValues.Add(ComboBoxOnClick.SelectedIndex);
-            ListofChosenValuesText.Add(ComboBoxOnClick.SelectedItem.ToString());
+            //ListofChosenValues.Add(ComboBoxOnClick.SelectedIndex);
+            //ListofChosenValuesText.Add(ComboBoxOnClick.SelectedItem.ToString());
         }
         private void button6_Click(object sender, EventArgs e)
         {
-            
-            
+            foreach(var chosenValue in ListofDropDownBoxes)
+            {
+                ListofChosenValues.Add(chosenValue.SelectedIndex);
+                ListofChosenValuesText.Add(chosenValue.SelectedItem.ToString());
+            }
+            foreach(var inputText in ListofTextBoxes)
+            {
+                ListofChosenCells.Add(inputText.Text);
+            }
             var MarkSheetCompletedfilePath = string.Empty;
             using (FolderBrowserDialog SetMarksheetSaveLocation = new FolderBrowserDialog())
             {
@@ -391,7 +409,6 @@ namespace MarkSheetCreator
         }
         public void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             
         }
         private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
