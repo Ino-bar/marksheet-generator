@@ -118,7 +118,6 @@ namespace MarkSheetCreator
             string dataTableContent = string.Empty;
             string dataTablefilePath = string.Empty;
             
-            
             comboBox1.Leave += new System.EventHandler(comboBox1_leave);
             textBox1.Leave += new System.EventHandler(textBox1_Leave);
             checkBox1.CheckedChanged += new System.EventHandler(checkBox1_CheckedChanged);
@@ -165,6 +164,15 @@ namespace MarkSheetCreator
         }
         private void Confirmation_Click(object sender, EventArgs e)
         {
+            foreach (var chosenValue in ListofDropDownBoxes)
+            {
+                ListofChosenValues.Add(chosenValue.SelectedIndex);
+                ListofChosenValuesText.Add(chosenValue.SelectedItem.ToString());
+            }
+            foreach (var inputText in ListofTextBoxes)
+            {
+                ListofChosenCells.Add(inputText.Text);
+            }
             MarksheetGenerator MarkSheetConstructor = new MarksheetGenerator();
             MarkSheetConstructor.GetChosenColumnsAndData();
             MarkSheetConstructor.CloseExcel();
@@ -254,15 +262,6 @@ namespace MarkSheetCreator
         }
         private void button6_Click(object sender, EventArgs e)
         {
-            foreach(var chosenValue in ListofDropDownBoxes)
-            {
-                ListofChosenValues.Add(chosenValue.SelectedIndex);
-                ListofChosenValuesText.Add(chosenValue.SelectedItem.ToString());
-            }
-            foreach(var inputText in ListofTextBoxes)
-            {
-                ListofChosenCells.Add(inputText.Text);
-            }
             var MarkSheetCompletedfilePath = string.Empty;
             using (FolderBrowserDialog SetMarksheetSaveLocation = new FolderBrowserDialog())
             {
@@ -273,20 +272,22 @@ namespace MarkSheetCreator
                     publicCompletedMarksheetSaveLocation = MarkSheetCompletedfilePath;
                 }
             }
-            if (ListofChosenValuesText != null || ListofChosenValuesText != null)
+            if(ListofDropDownBoxes != null && ListofTextBoxes != null)
+            //if (ListofChosenValuesText != null || ListofChosenValuesText != null)
             {
                 if (NumberOfCheckedCheckboxes != 0)
                 {
                     string[] DataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
-                    string NameField = ListofChosenValuesText[0];
-                    string MarkerField = ListofChosenValuesText[1];
+                    //string NameField = ListofChosenValuesText[0];
+                    //string MarkerField = ListofChosenValuesText[1];
                     //int k = 0;
                     for (int k = 0; k < Form1.ListofCheckBoxes.Count; k++)
                     {
                         if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
                         {
                             var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
-                            DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            //DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            DataSheetColumnsToFileName[k] = ListofDropDownBoxes[checkBoxToDataSheet].SelectedItem.ToString();
                         }
                     }
                     List<string> DataSheetColumnsToFileNameArrayToList = new List<string>(DataSheetColumnsToFileName);
@@ -373,12 +374,7 @@ namespace MarkSheetCreator
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             NumberOfCheckedCheckboxes = this.Controls.OfType<CheckBox>().Count(c => c.Checked);
-            Console.WriteLine(NumberOfCheckedCheckboxes);
-            foreach (CheckBox checkBox in ListofCheckBoxes)
-                if (checkBox.CheckState == CheckState.Checked)
-                {
-                    Console.WriteLine(ListofCheckBoxes.IndexOf(checkBox));
-                }
+
         }
         private void marksheetNameFieldCheck_CheckedChanged(object sender, EventArgs e)
         {
