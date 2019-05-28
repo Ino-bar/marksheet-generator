@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MarkSheetCreator.exe" size="32696">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MarkSheetCreator.exe" size="40376">
       <assemblyIdentity name="MarkSheetCreator" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>gS7N2GDjARwZ/uwdo0zlW6v2mJSMVgKt+Aqr57YP5q0=</dsig:DigestValue>
+        <dsig:DigestValue>paDZmRXI3rv3oThpZ5koKZenVFGoLCiZlGQEBooPOnU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
