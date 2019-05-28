@@ -46,6 +46,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
@@ -249,11 +250,23 @@
             this.label7.Size = new System.Drawing.Size(0, 20);
             this.label7.TabIndex = 19;
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(574, 436);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(202, 24);
+            this.checkBox2.TabIndex = 20;
+            this.checkBox2.Text = "Save in same workbook";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(830, 545);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.checkBox1);
@@ -300,6 +313,7 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 

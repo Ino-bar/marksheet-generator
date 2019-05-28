@@ -177,8 +177,14 @@ namespace MarkSheetCreator
                 ListofChosenCells.Add(inputText.Text);
             }
             MarksheetGenerator MarkSheetConstructor = new MarksheetGenerator();
-            MarkSheetConstructor.GetChosenColumnsAndData();
-            MarkSheetConstructor.CloseExcel();
+            if(checkBox2.CheckState == CheckState.Checked)
+            {
+                MarkSheetConstructor.SaveMarksheetsAsNewTab();
+            }
+            else
+            {
+                MarkSheetConstructor.GetChosenColumnsAndData();
+            }
         }
         public void button5_Click(object sender, EventArgs e)
         {
@@ -645,6 +651,11 @@ namespace MarkSheetCreator
 
         }
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
 
         }
