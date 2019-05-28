@@ -33,6 +33,9 @@ namespace MarkSheetCreator
         private int i = 0;
         private int textBoxTabIndex = 0;
         public static int NumberOfCheckedCheckboxes;
+        public static string[] DataSheetColumnsToFileName;
+        public static string FileName;
+        public static string MarkSheetCompletedfilePath;
 
         public static CheckBox PublicMarkSheetNameFieldCheck
         {
@@ -257,27 +260,12 @@ namespace MarkSheetCreator
         public void ComboBoxOnClick_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox ComboBoxOnClick = (ComboBox)sender;
-            //ListofChosenValues.Add(ComboBoxOnClick.SelectedIndex);
-            //ListofChosenValuesText.Add(ComboBoxOnClick.SelectedItem.ToString());
-        }
-        private void button6_Click(object sender, EventArgs e)
-        {
-            var MarkSheetCompletedfilePath = string.Empty;
-            using (FolderBrowserDialog SetMarksheetSaveLocation = new FolderBrowserDialog())
-            {
-                SetMarksheetSaveLocation.RootFolder = Environment.SpecialFolder.Desktop;
-                if (SetMarksheetSaveLocation.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    MarkSheetCompletedfilePath = SetMarksheetSaveLocation.SelectedPath;
-                    publicCompletedMarksheetSaveLocation = MarkSheetCompletedfilePath;
-                }
-            }
-            if(ListofDropDownBoxes != null && ListofTextBoxes != null)
-            //if (ListofChosenValuesText != null || ListofChosenValuesText != null)
+            if (FileName != null)
             {
                 if (NumberOfCheckedCheckboxes != 0)
                 {
-                    string[] DataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
+                    string[] dataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
+                    DataSheetColumnsToFileName = dataSheetColumnsToFileName;
                     //string NameField = ListofChosenValuesText[0];
                     //string MarkerField = ListofChosenValuesText[1];
                     //int k = 0;
@@ -287,10 +275,10 @@ namespace MarkSheetCreator
                         {
                             var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
                             //DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
-                            DataSheetColumnsToFileName[k] = ListofDropDownBoxes[checkBoxToDataSheet].SelectedItem.ToString();
+                            dataSheetColumnsToFileName[k] = ListofDropDownBoxes[checkBoxToDataSheet].SelectedItem.ToString();
                         }
                     }
-                    List<string> DataSheetColumnsToFileNameArrayToList = new List<string>(DataSheetColumnsToFileName);
+                    List<string> DataSheetColumnsToFileNameArrayToList = new List<string>(dataSheetColumnsToFileName);
                     DataSheetColumnsToFileNameArrayToList.RemoveAll(item => item == null);
                     /*
                     for (int k = 0; k < ListofCheckBoxes.Count; k++)
@@ -307,14 +295,79 @@ namespace MarkSheetCreator
                     */
                     _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
                     string fileType = ".xlsx";
-                    string fileName = DataSheetColumnsToFileNameArrayToList.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
-                    char last = fileName[fileName.Length - 1];
+                    FileName = DataSheetColumnsToFileNameArrayToList.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
+                    char last = FileName[FileName.Length - 1];
                     if (last.Equals(','))
                     {
-                        fileName = fileName.Remove(fileName.Length - 1);
+                        FileName = FileName.Remove(FileName.Length - 1);
                     }
-                    fileName = fileName + fileType;
-                    _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, fileName);
+                    FileName = FileName + fileType;
+                    _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, FileName);
+                    textBox2.Text = _completedMarksheetsfilepath;
+                }
+                else
+                {
+                    label7.Text = "You must tick at least one field for the file name";
+                }
+            }
+            //ListofChosenValues.Add(ComboBoxOnClick.SelectedIndex);
+            //ListofChosenValuesText.Add(ComboBoxOnClick.SelectedItem.ToString());
+        }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog SetMarksheetSaveLocation = new FolderBrowserDialog())
+            {
+                SetMarksheetSaveLocation.RootFolder = Environment.SpecialFolder.Desktop;
+                if (SetMarksheetSaveLocation.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    MarkSheetCompletedfilePath = SetMarksheetSaveLocation.SelectedPath;
+                    publicCompletedMarksheetSaveLocation = MarkSheetCompletedfilePath;
+                }
+            }
+            if(ListofDropDownBoxes != null && ListofTextBoxes != null)
+            //if (ListofChosenValuesText != null || ListofChosenValuesText != null)
+            {
+                if (NumberOfCheckedCheckboxes != 0)
+                {
+                    string[] dataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
+                    DataSheetColumnsToFileName = dataSheetColumnsToFileName;
+                    //string NameField = ListofChosenValuesText[0];
+                    //string MarkerField = ListofChosenValuesText[1];
+                    //int k = 0;
+                    for (int k = 0; k < Form1.ListofCheckBoxes.Count; k++)
+                    {
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                        {
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            //DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            dataSheetColumnsToFileName[k] = ListofDropDownBoxes[checkBoxToDataSheet].SelectedItem.ToString();
+                        }
+                    }
+                    List<string> DataSheetColumnsToFileNameArrayToList = new List<string>(dataSheetColumnsToFileName);
+                    DataSheetColumnsToFileNameArrayToList.RemoveAll(item => item == null);
+                    /*
+                    for (int k = 0; k < ListofCheckBoxes.Count; k++)
+                    { 
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                        {
+                            Console.WriteLine(ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]));
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            Console.WriteLine(checkBoxToDataSheet);
+                            DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            //Console.WriteLine(DataSheetColumnsToFileName[k]);
+                        }
+                    }
+                    */
+                    _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
+                    string fileType = ".xlsx";
+                    FileName = DataSheetColumnsToFileNameArrayToList.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
+                    char last = FileName[FileName.Length - 1];
+                    if (last.Equals(','))
+                    {
+                        FileName = FileName.Remove(FileName.Length - 1);
+                    }
+                    FileName = FileName + fileType;
+                    _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, FileName);
                     textBox2.Text = _completedMarksheetsfilepath;
                 }
                 else
@@ -336,8 +389,6 @@ namespace MarkSheetCreator
         }
         private void Cancel_Click(object sender, EventArgs e)
         {
-            
-            
             if (StudentDataSheet.ExcelAppDataSheet != null)
             {
                 StudentDataSheet.ExcelAppDataSheet.Quit();
@@ -374,11 +425,110 @@ namespace MarkSheetCreator
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             NumberOfCheckedCheckboxes = this.Controls.OfType<CheckBox>().Count(c => c.Checked);
-
+            if (FileName != null)
+            {
+                if (NumberOfCheckedCheckboxes != 0)
+                {
+                    string[] dataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
+                    DataSheetColumnsToFileName = dataSheetColumnsToFileName;
+                    //string NameField = ListofChosenValuesText[0];
+                    //string MarkerField = ListofChosenValuesText[1];
+                    //int k = 0;
+                    for (int k = 0; k < Form1.ListofCheckBoxes.Count; k++)
+                    {
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                        {
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            //DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            dataSheetColumnsToFileName[k] = ListofDropDownBoxes[checkBoxToDataSheet].SelectedItem.ToString();
+                        }
+                    }
+                    List<string> DataSheetColumnsToFileNameArrayToList = new List<string>(dataSheetColumnsToFileName);
+                    DataSheetColumnsToFileNameArrayToList.RemoveAll(item => item == null);
+                    /*
+                    for (int k = 0; k < ListofCheckBoxes.Count; k++)
+                    { 
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                        {
+                            Console.WriteLine(ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]));
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            Console.WriteLine(checkBoxToDataSheet);
+                            DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            //Console.WriteLine(DataSheetColumnsToFileName[k]);
+                        }
+                    }
+                    */
+                    _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
+                    string fileType = ".xlsx";
+                    FileName = DataSheetColumnsToFileNameArrayToList.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
+                    char last = FileName[FileName.Length - 1];
+                    if (last.Equals(','))
+                    {
+                        FileName = FileName.Remove(FileName.Length - 1);
+                    }
+                    FileName = FileName + fileType;
+                    _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, FileName);
+                    textBox2.Text = _completedMarksheetsfilepath;
+                }
+                else
+                {
+                    label7.Text = "You must tick at least one field for the file name";
+                }
+            }
         }
         private void marksheetNameFieldCheck_CheckedChanged(object sender, EventArgs e)
         {
             NumberOfCheckedCheckboxes = this.Controls.OfType<CheckBox>().Count(c => c.Checked);
+            if (FileName != null)
+            {
+                if (NumberOfCheckedCheckboxes != 0)
+                {
+                    string[] dataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
+                    DataSheetColumnsToFileName = dataSheetColumnsToFileName;
+                    //string NameField = ListofChosenValuesText[0];
+                    //string MarkerField = ListofChosenValuesText[1];
+                    //int k = 0;
+                    for (int k = 0; k < Form1.ListofCheckBoxes.Count; k++)
+                    {
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                        {
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            //DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            dataSheetColumnsToFileName[k] = ListofDropDownBoxes[checkBoxToDataSheet].SelectedItem.ToString();
+                        }
+                    }
+                    List<string> DataSheetColumnsToFileNameArrayToList = new List<string>(dataSheetColumnsToFileName);
+                    DataSheetColumnsToFileNameArrayToList.RemoveAll(item => item == null);
+                    /*
+                    for (int k = 0; k < ListofCheckBoxes.Count; k++)
+                    { 
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                        {
+                            Console.WriteLine(ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]));
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            Console.WriteLine(checkBoxToDataSheet);
+                            DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            //Console.WriteLine(DataSheetColumnsToFileName[k]);
+                        }
+                    }
+                    */
+                    _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
+                    string fileType = ".xlsx";
+                    FileName = DataSheetColumnsToFileNameArrayToList.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
+                    char last = FileName[FileName.Length - 1];
+                    if (last.Equals(','))
+                    {
+                        FileName = FileName.Remove(FileName.Length - 1);
+                    }
+                    FileName = FileName + fileType;
+                    _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, FileName);
+                    textBox2.Text = _completedMarksheetsfilepath;
+                }
+                else
+                {
+                    label7.Text = "You must tick at least one field for the file name";
+                }
+            }
             //Console.WriteLine(NumberOfCheckedCheckboxes);
             foreach (CheckBox checkBox in ListofCheckBoxes)
                 if (checkBox.CheckState == CheckState.Checked)
@@ -405,7 +555,56 @@ namespace MarkSheetCreator
         }
         public void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            if (FileName != null)
+            {
+                if (NumberOfCheckedCheckboxes != 0)
+                {
+                    string[] dataSheetColumnsToFileName = new string[ListofCheckBoxes.Count];
+                    DataSheetColumnsToFileName = dataSheetColumnsToFileName;
+                    //string NameField = ListofChosenValuesText[0];
+                    //string MarkerField = ListofChosenValuesText[1];
+                    //int k = 0;
+                    for (int k = 0; k < Form1.ListofCheckBoxes.Count; k++)
+                    {
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                        {
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            //DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            dataSheetColumnsToFileName[k] = ListofDropDownBoxes[checkBoxToDataSheet].SelectedItem.ToString();
+                        }
+                    }
+                    List<string> DataSheetColumnsToFileNameArrayToList = new List<string>(dataSheetColumnsToFileName);
+                    DataSheetColumnsToFileNameArrayToList.RemoveAll(item => item == null);
+                    /*
+                    for (int k = 0; k < ListofCheckBoxes.Count; k++)
+                    { 
+                        if (ListofCheckBoxes[k].CheckState == CheckState.Checked)
+                        {
+                            Console.WriteLine(ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]));
+                            var checkBoxToDataSheet = ListofCheckBoxes.IndexOf(ListofCheckBoxes[k]);
+                            Console.WriteLine(checkBoxToDataSheet);
+                            DataSheetColumnsToFileName[k] = ListofChosenValuesText[checkBoxToDataSheet];
+                            //Console.WriteLine(DataSheetColumnsToFileName[k]);
+                        }
+                    }
+                    */
+                    _completedMarksheetsfilepath = MarkSheetCompletedfilePath;
+                    string fileType = ".xlsx";
+                    FileName = DataSheetColumnsToFileNameArrayToList.Aggregate((partialPhrase, word) => $"{partialPhrase}, {word}");
+                    char last = FileName[FileName.Length - 1];
+                    if (last.Equals(','))
+                    {
+                        FileName = FileName.Remove(FileName.Length - 1);
+                    }
+                    FileName = FileName + fileType;
+                    _completedMarksheetsfilepath = System.IO.Path.Combine(MarkSheetCompletedfilePath, FileName);
+                    textBox2.Text = _completedMarksheetsfilepath;
+                }
+                else
+                {
+                    label7.Text = "You must tick at least one field for the file name";
+                }
+            }
         }
         private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
