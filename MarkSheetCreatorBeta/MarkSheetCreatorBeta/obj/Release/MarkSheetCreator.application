@@ -7,14 +7,14 @@
     <framework targetVersion="4.5.1" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="MarkSheetCreator.exe.manifest" size="3506">
+    <dependentAssembly dependencyType="install" codebase="MarkSheetCreator.exe.manifest" size="3504">
       <assemblyIdentity name="MarkSheetCreator.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>wkru7P/M3L/CncduXYwrdqUDw8TkzEXNbPLAm7ptag4=</dsig:DigestValue>
+        <dsig:DigestValue>JGlobAwN2WSnPUFIu5/NCZMUHYaBCJx7bp8Y/Qjt3+c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
